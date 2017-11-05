@@ -2,31 +2,29 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Learning Vue 2</title>
-	
-	
-
+    <title>Practica 2 Vuejs 2</title>
   </head>
   <body>
-  
+    <main>
 
-    <div id="app">	
-      <p>{{ mensaje }}</p>
-	  <input type="text" v-model="mensaje">
-	  <pre>
-		{{ $data }}
-	  </pre>
-    </div>
+      <h2 v-if="edad<18">No puedes entrar</h2>
+      <h2 v-else-if="edad>18">Eres mayor de edad</h2>
+
+
+      <h1 v-show=conectado>Hola</h1>
+      {{ $data }}
+
+
+    </main>
+    <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: 'main',
+        data: {
+          conectado: true,
+          edad: 44
+        },
+      });
+    </script>
   </body>
-  <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
-  <script>
-      new Vue({
-          el: '#app',
-          data: {
-              mensaje: 'Change me: Hello!',
-			  
-            }
-      })
-  </script>
-
 </html>
