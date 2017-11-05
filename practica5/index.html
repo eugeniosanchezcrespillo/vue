@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Practica 5 Vuejs 2 - Computed properties</title>
+  </head>
+  <body>
+    <main>
+      <h1>{{ mensajeAlReves }}</h1>
+      <ul>
+        <li v-for="tarea in tareasPorAntiguedad">
+            {{ tarea.nombre }} - <small>{{ tarea.prioridad }} </small>: {{ tarea.antiguedad }}
+        </li>
+      </ul>
+
+      <input type="text" name="" value="" placeholder="Introduce tu tarea" v-model="nuevaTarea">
+      <input type="button" name="Enviar tarea" value="Enviar tarea" v-on:click="agregarTarea">
+
+
+    </main>
+    <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        el: 'main',
+        data: {
+          conectado: true,
+          mensaje: 'Hola mundo :)',
+          nuevaTarea: null,
+          tareas: [
+            {nombre: 'hacer la compra', prioridad: true, antiguedad: 300},
+            {nombre: 'ordenar', prioridad: false, antiguedad: 700},
+            {nombre: 'cocinar', prioridad: true, antiguedad: 3},
+          ],
+
+        },
+        methods: {
+
+            agregarTarea(){
+              this.tareas.unshift({
+                nombre: this.nuevaTarea,
+                prioridad: true,
+                antiguedad: 100,
+              });
+              this.nuevaTarea='';
+            }
+
+        },
+        computed: {
+            mensajeAlReves(){
+                return this.mensaje.split('').reverse().join('');
+            },
+
+            tareasConPrioridad(){
+              return this.tareas.filter((tarea) => tarea.prioridad);
+            },
+
+            tareasPorAntiguedad(){
+              return this.tareas.sort((a,b) => a.antiguedad - b.antiguedad);
+            },
+        },
+
+      });
+    </script>
+  </body>
+</html>
