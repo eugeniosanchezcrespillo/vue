@@ -17,7 +17,7 @@
 
       <ul>
         <li v-for="juego in mejoresJuegos">
-          {{ juego.titulo }}
+          {{ juego.titulo | alReves }}
         </li>
       </ul>
 
@@ -28,6 +28,9 @@
     </main>
     <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
     <script>
+
+    //Filter antes de la instancia vue
+    Vue.filter('alReves', (valor) => valor.split('').reverse().join(''));
       const vm = new Vue({
         el: 'main',
         data: {
@@ -52,12 +55,13 @@
           ],
 
         },
+        // FIltros en Computed properties con posibilidad de agregar lodash u otra libreria
         computed: {
           mejoresJuegos(){
             return this.juegos.filter((juego) => juego.puntuacion >= this.minimo);
           },
           buscarJuego(){
-            return this.juegos.filter( (juego) => juego.titulo.includes(this.busqueda));
+            return this.juegos.filter((juego) => juego.titulo.includes(this.busqueda));
           }
         },
       });
