@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Practica 7 Vuejs 2 - Data binding attributes and classes</title>
+    <style media="screen">
+      .li{
+        cursor: pointer;
+      }
+      .completado{
+        text-decoration: line-through;
+      }
+    </style>
+
+  </head>
+  <body>
+    <main>
+
+      <h1>Tareas completadas {{ tareasCompletadas.length }} completadas</h1>
+      <ul>
+        <li :class="{completado: tarea.completado}"
+          @click="completarTarea(tarea)"
+          v-for="tarea in tareas">
+          {{ tarea.nombre }}
+        </li>
+      </ul>
+
+
+      <pre>{{$data}}</pre>
+
+    </main>
+    <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
+    <script>
+
+      const vm = new Vue({
+        el: 'main',
+        data: {
+
+          tareas: [
+            {nombre: 'hacer la compra', completado: false},
+            {nombre: 'aprender vue 2', completado: false},
+            {nombre: 'limpiar la casa', completado: true},
+          ],
+
+        },
+        methods: {
+          completarTarea(tarea){
+            tarea.completado = !tarea.completado;
+          }
+        },
+        computed: {
+          tareasCompletadas(){
+            return this.tareas.filter((tarea)=> tarea.completado);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
