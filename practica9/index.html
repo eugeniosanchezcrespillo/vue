@@ -2,108 +2,39 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Practica 8 Vuejs 2 - Transitions</title>
-    <style>
-        /* Transition */
-        .aparecer-enter{
-          opacity: 0;
-        }
-        .aparecer-enter-active{
-          transition: opacity 2s;
-        }
-        .aparecer-leave-to{
-          opacity: 0;
-        }
-        .aparecer-leave-active{
-          transition: opacity 2s;
-        }
-
-        /* Animation */
-        .bote-enter-active {
-            animation: bounce-in .5s;
-        }
-
-        .bote-leave-active {
-            animation: bounce-out .5s;
-        }
-
-        @keyframes bounce-in {
-            0% {
-                transform: scale(0);
-            }
-            50% {
-                transform: scale(1.5);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes bounce-out {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.5);
-            }
-            100% {
-                transform: scale(0);
-            }
-        }
-    </style>
-    <link href="https://unpkg.com/animate.css@3.5.1/animate.min.css" rel="stylesheet" type="text/css">
+    <title>Practica 9 Vuejs 2 - Ajax con axios</title>
 
   </head>
   <body>
     <main>
 
-
-      <button @click="mostrar = !mostrar">Mostrar/Ocultar</button>
-
-        <!-- Transition -->
-        <transition name="aparecer" appear>
-            <h1 v-if="mostrar" v-text="mensajes.transicion"></h1>
-        </transition>
-
-        <!-- Animation -->
-        <transition name="bote">
-            <h1 v-if="mostrar" v-text="mensajes.animacion"></h1>
-        </transition>
-
-        <!-- Animate.css -->
-        <transition
-            name="animate.css"
-            enter-active-class="animated rotateInUpLeft"
-            leave-active-class="animated zoomOutUp">
-            <h1 v-if="mostrar" v-text="mensajes.animationCustom"></h1>
-        </transition>
-
-        <br />
-        <br />  
-        <!-- Animacion entre elementos -->
-        <transition name="aparecer" mode="out-in">
-            <button v-if="mostrar" key="mostrar" type="button" name="button">Button</button>
-            <button v-else key="ocultar" type="button" name="button1">Button1</button>
-        </transition>
-
+      <img v-for="persona in personas"
+          :src="persona.picture.thumbnail"
+          :alt="persona.name.first">
 
       <pre>{{$data}}</pre>
 
     </main>
     <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
 
     new Vue({
       el: 'main',
+      mounted(){
+        this.cargarPersonas();
+      },
       data: {
-          mostrar: false,
-          mensajes: {
-              transicion: 'Transiciones CSS con Vue.js',
-              animacion: 'Animaciones CSS con Vue.js',
-              animationCustom: 'Animaciones custom CSS con Vue.js',
-              entreElementos: 'Transiciones entre elementos con Vue.js'
-          }
+        personas: []
+      },
+      methods:{
+        cargarPersonas(){
+          axios.get('https://randomuser.me/api/?results=500')
+               .then((respuesta) =>{
+                    this.personas = respuesta.data.results;
+               });
+        }
       },
     });
     </script>
