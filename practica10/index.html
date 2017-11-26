@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Practica 10 Vuejs 2 - Componentes</title>
+
+  </head>
+  <body>
+    <main>
+
+    Tasks
+    <my-tasks></my-tasks>
+      Tareas Locales
+	  <mis-tareas :tareas="tareasLocales"></mis-tareas>
+
+
+	  Tareas Ajax
+	  <mis-tareas :tareas="tareasAjax"></mis-tareas>
+
+      <pre>{{$data}}</pre>
+
+    </main>
+    <script src="https://unpkg.com/vue@2.5.2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+
+  Vue.component('my-tasks',{
+  		template: `<ul><li v-for="task in myTasks">{{task.title}}</li></ul>`,
+      mounted(){
+        this.loadTasks();
+      },
+      methods:{
+        loadTasks(){
+          axios.get('http://jsonplaceholder.typicode.com/todos')
+               .then((respuesta) =>{
+                    this.tasks = respuesta.data;
+               });
+        }
+      },
+	   data(){
+       return {
+         myTasks : [
+           {title: 'Isolated component'}
+         ],
+         tasks : [],
+       }
+     },
+  });
+
+  Vue.component('mis-tareas',{
+		props: ['tareas'],
+		template: `<ul><li v-for="tarea in tareas">{{tarea.title}}</li></ul>`
+	});
+
+    new Vue({
+      el: 'main',
+      mounted(){
+        this.cargarTareas();
+      },
+      methods:{
+        cargarTareas(){
+          axios.get('http://jsonplaceholder.typicode.com/todos')
+               .then((respuesta) =>{
+                    this.tareasAjax = respuesta.data;
+               });
+        }
+      },
+	   data: {
+        tareasAjax: [],
+		tareasLocales: [
+			{title: 'Hacer la compra'},
+			{title: 'Estudiar components de vue'},
+		],
+      },
+    });
+    </script>
+  </body>
+</html>
